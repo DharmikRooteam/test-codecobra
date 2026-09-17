@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_height" model="ir.ui.view">
+        <field name="name">res.users.form.height</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='preferences']//group" position="inside">
+                <group string="Height" name="height">
+                    <label for="height"/>
+                    <div class="o_row">
+                        <field name="height"/>
+                        <span>cm</span>
+                    </div>
+                    <field name="height_display" readonly="1"/>
+                </group>
+                <group string="Weight" name="weight">
+                    <label for="weight"/>
+                    <div class="o_row">
+                        <field name="weight"/>
+                        <span>kg</span>
+                    </div>
+                    <field name="weight_display" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
