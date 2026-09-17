@@ -14,6 +14,14 @@
                     </div>
                     <field name="height_display" readonly="1"/>
                 </group>
+                <group string="Weight" name="weight">
+                    <label for="weight"/>
+                    <div class="o_row">
+                        <field name="weight"/>
+                        <span>kg</span>
+                    </div>
+                    <field name="weight_display" readonly="1"/>
+                </group>
             </xpath>
         </field>
     </record>

@@ -51,3 +51,31 @@ class TestResUsersHeight(TransactionCase):
     def test_unrealistic_height_rejected(self):
         with self.assertRaises(ValidationError):
             self.user.height = 400
+
+    def test_conversion_70_kg(self):
+        self.user.weight = 70
+        self.assertAlmostEqual(self.user.weight_lbs, 154.3, places=1)
+        self.assertEqual(self.user.weight_display, '154.3 lbs')
+
+    def test_conversion_100_kg(self):
+        self.user.weight = 100
+        self.assertAlmostEqual(self.user.weight_lbs, 220.5, places=1)
+        self.assertEqual(self.user.weight_display, '220.5 lbs')
+
+    def test_conversion_whole_pounds(self):
+        self.user.weight = 45.3592
+        self.assertAlmostEqual(self.user.weight_lbs, 100.0, places=1)
+        self.assertEqual(self.user.weight_display, '100 lbs')
+
+    def test_no_weight(self):
+        self.user.weight = 0
+        self.assertFalse(self.user.weight_display)
+        self.assertEqual(self.user.weight_lbs, 0.0)
+
+    def test_negative_weight_rejected(self):
+        with self.assertRaises(ValidationError):
+            self.user.weight = -10
+
+    def test_unrealistic_weight_rejected(self):
+        with self.assertRaises(ValidationError):
+            self.user.weight = 600

@@ -1,6 +1,6 @@
 {
-    'name': 'User Height',
-    'summary': 'Enter height in cm and show it as feet and inches on the user',
+    'name': 'User Height & Weight',
+    'summary': 'Enter height in cm (shown as feet and inches) and weight in kg (shown in pounds) on the user',
     'author': 'Rooteam',
     'website': 'https://www.rooteam.com',
     'version': '17.0.0.0.0',

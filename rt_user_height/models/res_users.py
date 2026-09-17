@@ -3,6 +3,7 @@ from odoo.exceptions import ValidationError
 
 INCHES_PER_FOOT = 12
 CM_PER_INCH = 2.54
+POUNDS_PER_KG = 2.20462
 
 
 class Users(models.Model):
@@ -49,6 +50,32 @@ class Users(models.Model):
             else:
                 user.height_display = False
 
+    weight = fields.Float(
+        string='Weight (kg)',
+        help='Weight in kilograms. Converted to pounds automatically.',
+    )
+    weight_lbs = fields.Float(
+        string='Weight (lbs)',
+        compute='_compute_weight_lbs',
+        store=True,
+        help='Weight in pounds (rounded to one decimal).',
+    )
+    weight_display = fields.Char(
+        string='Weight',
+        compute='_compute_weight_lbs',
+        store=True,
+        help='Weight shown as e.g. "154.3 lbs".',
+    )
+
+    @api.depends('weight')
+    def _compute_weight_lbs(self):
+        for user in self:
+            user.weight_lbs = round(user.weight * POUNDS_PER_KG, 1)
+            if user.weight:
+                user.weight_display = _('%(lbs)s lbs') % {'lbs': f'{user.weight_lbs:g}'}
+            else:
+                user.weight_display = False
+
     @api.constrains('height')
     def _check_height(self):
         for user in self:
@@ -56,3 +83,11 @@ class Users(models.Model):
                 raise ValidationError(_('Height cannot be negative.'))
             if user.height and user.height > 300:
                 raise ValidationError(_('Height seems unrealistic (more than 300 cm).'))
+
+    @api.constrains('weight')
+    def _check_weight(self):
+        for user in self:
+            if user.weight < 0:
+                raise ValidationError(_('Weight cannot be negative.'))
+            if user.weight and user.weight > 500:
+                raise ValidationError(_('Weight seems unrealistic (more than 500 kg).'))
